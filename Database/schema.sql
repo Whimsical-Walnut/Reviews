@@ -38,6 +38,12 @@ CREATE TABLE results (
   FOREIGN KEY (characteristicsId)
 	REFERENCES characteristics(id)
 	ON DELETE CASCADE
+   FOREIGN KEY (recommendId)
+	REFERENCES recommend(id)
+	ON DELETE CASCADE
+   FOREIGN KEY (ratingId)
+	REFERENCES rating(id)
+	ON DELETE CASCADE
   );
 
 
@@ -46,6 +52,23 @@ CREATE TABLE characteristics(
   size DECIMAL(5,4) NOT NULL,
   width DECIMAL(5,4) NOT NULL,
   comfort DECIMAL(5,4) NOT NULL,
+  PRIMARY KEY (id)
+  );
+
+  CREATE TABLE rating(
+  id INT NOT NULL AUTO_INCREMENT,
+  zero INT,
+  two INT,
+  three INT,
+  four INT,
+  five INT,
+  PRIMARY KEY (id)
+  );
+
+CREATE TABLE recommended(
+  id INT NOT NULL AUTO_INCREMENT,
+  yes INT,
+  no INT,
   PRIMARY KEY (id)
   );
   
