@@ -1,92 +1,105 @@
 
-DROP DATABASE IF EXISTS productAPI;
+DROP DATABASE IF EXISTS reviewsAPI;
 
-CREATE DATABASE productAPI;
+CREATE DATABASE reviewsAPI;
 
-use productAPI;
+use reviewsAPI;
 
 
-CREATE TABLE reviews (
+CREATE TABLE product (
   id INT NOT NULL AUTO_INCREMENT,
-  resultsId INT,
-  count INT ,
-  productId INT NOT NULL,
-  PRIMARY KEY (id),
-    FOREIGN KEY (resultsId)
-        REFERENCES results(id)
-        ON DELETE CASCADE
+  name VARCHAR(32) NOT NULL DEFAULT '',
+  slogan VARCHAR(500) NOT NULL DEFAULT '',
+  description VARCHAR(500) NOT NULL DEFAULT '',
+  PRIMARY KEY (id)
 );
-  
-  
-CREATE TABLE results (
+
+
+CREATE TABLE rating(
   id INT NOT NULL AUTO_INCREMENT,
-  photoId INT NOT NULL,
-  email VARCHAR(50) NOT NULL,
-  name VARCHAR(45) NOT NULL,
-  rating INT NOT NULL CHECK (rating<6 AND rating>=0),
-  recommend TINYINT(1) DEFAULT NULL,
-  summary VARCHAR(255) NOT NULL,
-  helpfulness INT NULL,
-  report INT NULL,
-  body VARCHAR(255) NOT NULL,
-  date DATETIME NOT NULL,
-  characteristicsId INT NOT NULL,
+  productId INT NOT NULL,
+  rating INT NOT NULL CHECK (rating<6 AND rating>=0) DEFAULT 0, 
   PRIMARY KEY (id),
-  FOREIGN KEY (photoId)
-	REFERENCES photos(id)
-	ON DELETE CASCADE,
-  FOREIGN KEY (characteristicsId)
-	REFERENCES characteristics(id)
-	ON DELETE CASCADE
-   FOREIGN KEY (recommendId)
-	REFERENCES recommend(id)
-	ON DELETE CASCADE
-   FOREIGN KEY (ratingId)
-	REFERENCES rating(id)
-	ON DELETE CASCADE
-  );
-
-
-CREATE TABLE characteristics(
-  id INT NOT NULL AUTO_INCREMENT,
-  size DECIMAL(5,4) NOT NULL,
-  width DECIMAL(5,4) NOT NULL,
-  comfort DECIMAL(5,4) NOT NULL,
-  PRIMARY KEY (id)
-  );
-
-  CREATE TABLE rating(
-  id INT NOT NULL AUTO_INCREMENT,
-  zero INT,
-  two INT,
-  three INT,
-  four INT,
-  five INT,
-  PRIMARY KEY (id)
+  FOREIGN KEY (productId)
+	  REFERENCES product(id)
+	  ON DELETE CASCADE
   );
 
 CREATE TABLE recommended(
   id INT NOT NULL AUTO_INCREMENT,
-  yes INT,
-  no INT,
-  PRIMARY KEY (id)
+  productId INT NOT NULL,
+  yes INT NOT NULL DEFAULT 0,
+  no INT NOT NULL DEFAULT 0,
+  PRIMARY KEY (id),
+  FOREIGN KEY (productId)
+	  REFERENCES product(id)
+	  ON DELETE CASCADE
   );
   
 CREATE TABLE photos(
   id INT NOT NULL AUTO_INCREMENT,
-  url VARCHAR(50) NOT NULL,
+  url VARCHAR(50) NOT NULL DEFAULT '',
   PRIMARY KEY (id)
 );
 
 
 
+CREATE TABLE characteristics(
+  id INT NOT NULL AUTO_INCREMENT,
+  productId INT NOT NULL,
+  size DECIMAL(5,4) NOT NULL,
+  width DECIMAL(5,4) NOT NULL ,
+  comfort DECIMAL(5,4) NOT NULL ,
+  PRIMARY KEY (id),
+  FOREIGN KEY (productId)
+	  REFERENCES product(id)
+	  ON DELETE CASCADE
+  );
+
+
+CREATE TABLE results (
+  id INT NOT NULL AUTO_INCREMENT,
+  photoId INT NOT NULL,
+  email VARCHAR(50) NOT NULL DEFAULT '',
+  name VARCHAR(45) NOT NULL DEFAULT '',
+  rating INT NOT NULL CHECK (rating<6 AND rating>=0),
+  recommend TINYINT(1) DEFAULT NULL,
+  summary VARCHAR(255) NOT NULL DEFAULT '',
+  helpfulness INT DEFAULT NULL ,
+  report INT DEFAULT NULL,
+  body VARCHAR(255) NOT NULL DEFAULT '',
+  date DATETIME NOT NULL,
+  characteristicsId INT NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (photoId)
+	  REFERENCES photos(id)
+	  ON DELETE CASCADE,
+  FOREIGN KEY (characteristicsId)
+	  REFERENCES characteristics(id)
+	  ON DELETE CASCADE
+  );
+
+CREATE TABLE reviews (
+  id INT NOT NULL AUTO_INCREMENT,
+  productId INT NOT NULL,
+  resultsId INT NOT NULL,
+  count INT DEFAULT 0,
+  PRIMARY KEY (id),
+  FOREIGN KEY (resultsId)
+    REFERENCES results(id)
+    ON DELETE CASCADE,
+  FOREIGN KEY (productId)
+    REFERENCES product(id)
+    ON DELETE CASCADE
+);
+  
 CREATE TABLE reponse (
   id INT NOT NULL AUTO_INCREMENT,
   resultsId INT NOT NULL,
-  response VARCHAR(255),
+  response VARCHAR(255) NOT NULL DEFAULT '',
   PRIMARY KEY (id),
   FOREIGN KEY (resultsId)
-	REFERENCES results(id)
-	ON DELETE CASCADE
+	  REFERENCES results(id)
+	  ON DELETE CASCADE
 );
   
