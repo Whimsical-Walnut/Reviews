@@ -9,15 +9,17 @@ use reviewsAPI;
 
 CREATE TABLE photos(
   id INT NOT NULL AUTO_INCREMENT,
+  reviewId INT NOT NULL,
   url VARCHAR(50) NOT NULL DEFAULT '',
-  PRIMARY KEY (id)
+  PRIMARY KEY (id),
+  FOREIGN KEY (reviewId)
+    REFERENCES review(id)
+    ON DELETE CASCADE,
 );
-
 
 
 CREATE TABLE review (
   id INT NOT NULL AUTO_INCREMENT,
-  photoId INT NOT NULL,
   email VARCHAR(50) NOT NULL DEFAULT '',
   name VARCHAR(45) NOT NULL DEFAULT '',
   rating INT NOT NULL CHECK (rating<6 AND rating>=0),
@@ -33,9 +35,6 @@ CREATE TABLE review (
   FOREIGN KEY (photoId)
 	  REFERENCES photos(id)
 	  ON DELETE CASCADE,
-  FOREIGN KEY (characteristicsId)
-	  REFERENCES characteristics(id)
-	  ON DELETE CASCADE
   );
 
 CREATE TABLE product (
