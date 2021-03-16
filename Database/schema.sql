@@ -72,6 +72,7 @@ CREATE TABLE recommended(
   CREATE TABLE characteristics(
   id INT NOT NULL AUTO_INCREMENT,
   productId INT NOT NULL,
+  name VARCHAR(255) NOT NULL DEFAULT '',
   value DECIMAL(5,4) NOT NULL,
   PRIMARY KEY (id),
   FOREIGN KEY (productId)
