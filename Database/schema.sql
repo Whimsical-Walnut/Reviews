@@ -24,7 +24,7 @@ CREATE TABLE results (
   email VARCHAR(50) NOT NULL,
   name VARCHAR(45) NOT NULL,
   rating INT NOT NULL CHECK (rating<6 AND rating>=0),
-  recommend BOOLEAN NOT NULL,
+  recommend TINYINT(1) DEFAULT NULL,
   summary VARCHAR(255) NOT NULL,
   helpfulness INT NULL,
   report INT NULL,
