@@ -47,9 +47,7 @@ CREATE TABLE photos(
 CREATE TABLE characteristics(
   id INT NOT NULL AUTO_INCREMENT,
   productId INT NOT NULL,
-  size DECIMAL(5,4) NOT NULL,
-  width DECIMAL(5,4) NOT NULL ,
-  comfort DECIMAL(5,4) NOT NULL ,
+  value DECIMAL(5,4) NOT NULL,
   PRIMARY KEY (id),
   FOREIGN KEY (productId)
 	  REFERENCES product(id)
