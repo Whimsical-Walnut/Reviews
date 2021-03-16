@@ -30,7 +30,6 @@ CREATE TABLE review (
   report INT DEFAULT NULL,
   body VARCHAR(255) NOT NULL DEFAULT '',
   date DATETIME NOT NULL,
-  characteristicsId INT NOT NULL,
   PRIMARY KEY (id),
   FOREIGN KEY (photoId)
 	  REFERENCES photos(id)
