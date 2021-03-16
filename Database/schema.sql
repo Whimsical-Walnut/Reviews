@@ -1,3 +1,11 @@
+
+DROP DATABASE IF EXISTS productAPI;
+
+CREATE DATABASE productAPI;
+
+use productAPI;
+
+
 CREATE TABLE reviews (
   id INT NOT NULL AUTO_INCREMENT,
   resultsId INT,
