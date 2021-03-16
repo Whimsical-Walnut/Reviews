@@ -6,14 +6,47 @@ CREATE DATABASE reviewsAPI;
 use reviewsAPI;
 
 
-CREATE TABLE product (
+
+CREATE TABLE photos(
   id INT NOT NULL AUTO_INCREMENT,
-  name VARCHAR(32) NOT NULL DEFAULT '',
-  slogan VARCHAR(500) NOT NULL DEFAULT '',
-  description VARCHAR(500) NOT NULL DEFAULT '',
+  url VARCHAR(50) NOT NULL DEFAULT '',
   PRIMARY KEY (id)
 );
 
+
+
+CREATE TABLE review (
+  id INT NOT NULL AUTO_INCREMENT,
+  photoId INT NOT NULL,
+  email VARCHAR(50) NOT NULL DEFAULT '',
+  name VARCHAR(45) NOT NULL DEFAULT '',
+  rating INT NOT NULL CHECK (rating<6 AND rating>=0),
+  recommend TINYINT(1) DEFAULT NULL,
+  summary VARCHAR(255) NOT NULL DEFAULT '',
+  helpfulness INT DEFAULT NULL ,
+  reponse VARCHAR(255) NOT NULL DEFAULT '',
+  report INT DEFAULT NULL,
+  body VARCHAR(255) NOT NULL DEFAULT '',
+  date DATETIME NOT NULL,
+  characteristicsId INT NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (photoId)
+	  REFERENCES photos(id)
+	  ON DELETE CASCADE,
+  FOREIGN KEY (characteristicsId)
+	  REFERENCES characteristics(id)
+	  ON DELETE CASCADE
+  );
+
+CREATE TABLE product (
+  id INT NOT NULL AUTO_INCREMENT,
+  reviewId INT NOT NULL,
+  count INT DEFAULT 0,
+  PRIMARY KEY (id),
+  FOREIGN KEY (reviewId)
+    REFERENCES review(id)
+    ON DELETE CASCADE,
+);
 
 CREATE TABLE rating(
   id INT NOT NULL AUTO_INCREMENT,
@@ -36,15 +69,7 @@ CREATE TABLE recommended(
 	  ON DELETE CASCADE
   );
   
-CREATE TABLE photos(
-  id INT NOT NULL AUTO_INCREMENT,
-  url VARCHAR(50) NOT NULL DEFAULT '',
-  PRIMARY KEY (id)
-);
-
-
-
-CREATE TABLE characteristics(
+  CREATE TABLE characteristics(
   id INT NOT NULL AUTO_INCREMENT,
   productId INT NOT NULL,
   value DECIMAL(5,4) NOT NULL,
@@ -53,51 +78,4 @@ CREATE TABLE characteristics(
 	  REFERENCES product(id)
 	  ON DELETE CASCADE
   );
-
-
-CREATE TABLE results (
-  id INT NOT NULL AUTO_INCREMENT,
-  photoId INT NOT NULL,
-  email VARCHAR(50) NOT NULL DEFAULT '',
-  name VARCHAR(45) NOT NULL DEFAULT '',
-  rating INT NOT NULL CHECK (rating<6 AND rating>=0),
-  recommend TINYINT(1) DEFAULT NULL,
-  summary VARCHAR(255) NOT NULL DEFAULT '',
-  helpfulness INT DEFAULT NULL ,
-  report INT DEFAULT NULL,
-  body VARCHAR(255) NOT NULL DEFAULT '',
-  date DATETIME NOT NULL,
-  characteristicsId INT NOT NULL,
-  PRIMARY KEY (id),
-  FOREIGN KEY (photoId)
-	  REFERENCES photos(id)
-	  ON DELETE CASCADE,
-  FOREIGN KEY (characteristicsId)
-	  REFERENCES characteristics(id)
-	  ON DELETE CASCADE
-  );
-
-CREATE TABLE reviews (
-  id INT NOT NULL AUTO_INCREMENT,
-  productId INT NOT NULL,
-  resultsId INT NOT NULL,
-  count INT DEFAULT 0,
-  PRIMARY KEY (id),
-  FOREIGN KEY (resultsId)
-    REFERENCES results(id)
-    ON DELETE CASCADE,
-  FOREIGN KEY (productId)
-    REFERENCES product(id)
-    ON DELETE CASCADE
-);
-  
-CREATE TABLE reponse (
-  id INT NOT NULL AUTO_INCREMENT,
-  resultsId INT NOT NULL,
-  response VARCHAR(255) NOT NULL DEFAULT '',
-  PRIMARY KEY (id),
-  FOREIGN KEY (resultsId)
-	  REFERENCES results(id)
-	  ON DELETE CASCADE
-);
   

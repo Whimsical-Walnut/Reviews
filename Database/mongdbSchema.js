@@ -8,7 +8,7 @@ const reviewsSchema = new Schema({
     name: String,
     body: String,
     email: String,
-    characteristics: Schema.Types.ObjectId,
+    characteristics: { type: Schema.Types.ObjectId, ref: 'Meta' },
     results: [
         {
             review_id: Number,
@@ -20,6 +20,7 @@ const reviewsSchema = new Schema({
             date: Date,
             reviewer_name: String,
             helpfulness: Number,
+            report: Number,
             photos: [{
                 id: Number,
                 url: String
@@ -38,29 +39,18 @@ const metaSchema = new Schema({
         2: Number,
         3: Number,
         4: Number,
-        // ...
     },
     recommended: {
-        0: Number
-        // ...
+        0: Number,
+        1: Number
     },
     characteristics: {
-        Size: {
-            id: Number,
-            value: Number
-        },
-        Width: {
-            id: Number,
-            value: Number
-        },
-        Comfort: {
-            id: Number,
-            value: Number
-        },
+        id: {
+            value: String
+        }
     }
 });
 
 
 const Meta = mongoose.model('Meta', metaSchema);
-
 
