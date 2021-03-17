@@ -5,21 +5,19 @@ CREATE DATABASE reviewsAPI;
 
 use reviewsAPI;
 
-
-
-CREATE TABLE photos(
+CREATE TABLE product (
   id INT NOT NULL AUTO_INCREMENT,
-  reviewId INT NOT NULL,
-  url VARCHAR(50) NOT NULL DEFAULT '',
-  PRIMARY KEY (id),
-  FOREIGN KEY (reviewId)
-    REFERENCES review(id)
-    ON DELETE CASCADE,
+  count INT NOT NULL DEFAULT 0,
+  page INT NOT NULL DEFAULT 0,
+  PRIMARY KEY (id)
 );
+
+
 
 
 CREATE TABLE review (
   id INT NOT NULL AUTO_INCREMENT,
+  productId INT NOT NULL,
   email VARCHAR(50) NOT NULL DEFAULT '',
   name VARCHAR(45) NOT NULL DEFAULT '',
   rating INT NOT NULL CHECK (rating<6 AND rating>=0),
@@ -31,20 +29,51 @@ CREATE TABLE review (
   body VARCHAR(255) NOT NULL DEFAULT '',
   date DATETIME NOT NULL,
   PRIMARY KEY (id),
-  FOREIGN KEY (photoId)
-	  REFERENCES photos(id)
-	  ON DELETE CASCADE,
+  FOREIGN KEY (productId)
+    REFERENCES product(id)
+    ON DELETE CASCADE
   );
 
-CREATE TABLE product (
+
+
+CREATE TABLE photos(
   id INT NOT NULL AUTO_INCREMENT,
   reviewId INT NOT NULL,
-  count INT DEFAULT 0,
+  url VARCHAR(50) NOT NULL DEFAULT '',
   PRIMARY KEY (id),
   FOREIGN KEY (reviewId)
     REFERENCES review(id)
-    ON DELETE CASCADE,
+    ON DELETE CASCADE
 );
+
+
+
+  CREATE TABLE characteristics(
+  id INT NOT NULL AUTO_INCREMENT,
+  productId INT NOT NULL,
+  name VARCHAR(255) NOT NULL DEFAULT '',
+  PRIMARY KEY (id),
+  FOREIGN KEY (productId)
+	  REFERENCES product(id)
+	  ON DELETE CASCADE
+  );
+
+
+  CREATE TABLE characteristics_reviews(
+  id INT NOT NULL AUTO_INCREMENT,
+  productId INT NOT NULL,
+  reviewId INT NOT NULL,
+  value DECIMAL(5,4) NOT NULL,
+  PRIMARY KEY (id),
+  FOREIGN KEY (productId)
+	  REFERENCES product(id)
+	  ON DELETE CASCADE,
+  FOREIGN KEY (reviewId)
+    REFERENCES review(id)
+    ON DELETE CASCADE
+
+  );
+  
 
 CREATE TABLE rating(
   id INT NOT NULL AUTO_INCREMENT,
@@ -61,17 +90,6 @@ CREATE TABLE recommended(
   productId INT NOT NULL,
   yes INT NOT NULL DEFAULT 0,
   no INT NOT NULL DEFAULT 0,
-  PRIMARY KEY (id),
-  FOREIGN KEY (productId)
-	  REFERENCES product(id)
-	  ON DELETE CASCADE
-  );
-  
-  CREATE TABLE characteristics(
-  id INT NOT NULL AUTO_INCREMENT,
-  productId INT NOT NULL,
-  name VARCHAR(255) NOT NULL DEFAULT '',
-  value DECIMAL(5,4) NOT NULL,
   PRIMARY KEY (id),
   FOREIGN KEY (productId)
 	  REFERENCES product(id)
