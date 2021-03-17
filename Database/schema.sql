@@ -62,13 +62,13 @@ CREATE TABLE photos(
   CREATE TABLE characteristics_reviews(
   id INT NOT NULL AUTO_INCREMENT,
   characteristic_id INT NOT NULL,
-  reviewId INT NOT NULL,
+  review_id INT NOT NULL,
   value DECIMAL(5,4) NOT NULL,
   PRIMARY KEY (id),
   FOREIGN KEY (characteristic_id)
 	  REFERENCES characteristics(id)
 	  ON DELETE CASCADE,
-  FOREIGN KEY (reviewId)
+  FOREIGN KEY (review_id)
     REFERENCES review(id)
     ON DELETE CASCADE
 
