@@ -18,15 +18,15 @@ CREATE TABLE product (
 CREATE TABLE review (
   id INT NOT NULL AUTO_INCREMENT,
   productId INT NOT NULL,
-  email VARCHAR(50) NOT NULL DEFAULT '',
-  name VARCHAR(45) NOT NULL DEFAULT '',
+  email VARCHAR(50) NOT NULL ,
+  name VARCHAR(45) NOT NULL ,
   rating INT NOT NULL CHECK (rating<6 AND rating>=0),
   recommend TINYINT(1) DEFAULT NULL,
-  summary VARCHAR(255) NOT NULL DEFAULT '',
+  summary VARCHAR(255) NOT NULL ,
   helpfulness INT DEFAULT NULL ,
-  reponse VARCHAR(255) NOT NULL DEFAULT '',
+  reponse VARCHAR(255) NOT NULL,
   report INT DEFAULT NULL,
-  body VARCHAR(255) NOT NULL DEFAULT '',
+  body VARCHAR(255) NOT NULL,
   date DATETIME NOT NULL,
   PRIMARY KEY (id),
   FOREIGN KEY (productId)
@@ -39,7 +39,7 @@ CREATE TABLE review (
 CREATE TABLE photos(
   id INT NOT NULL AUTO_INCREMENT,
   reviewId INT NOT NULL,
-  url VARCHAR(50) NOT NULL DEFAULT '',
+  url VARCHAR(50) NOT NULL,
   PRIMARY KEY (id),
   FOREIGN KEY (reviewId)
     REFERENCES review(id)
@@ -51,7 +51,7 @@ CREATE TABLE photos(
   CREATE TABLE characteristics(
   id INT NOT NULL AUTO_INCREMENT,
   productId INT NOT NULL,
-  name VARCHAR(255) NOT NULL DEFAULT '',
+  name VARCHAR(255) NOT NULL,
   PRIMARY KEY (id),
   FOREIGN KEY (productId)
 	  REFERENCES product(id)
@@ -61,12 +61,12 @@ CREATE TABLE photos(
 
   CREATE TABLE characteristics_reviews(
   id INT NOT NULL AUTO_INCREMENT,
-  productId INT NOT NULL,
+  characteristicsId INT NOT NULL,
   reviewId INT NOT NULL,
   value DECIMAL(5,4) NOT NULL,
   PRIMARY KEY (id),
-  FOREIGN KEY (productId)
-	  REFERENCES product(id)
+  FOREIGN KEY (characteristicsId)
+	  REFERENCES characteristics(id)
 	  ON DELETE CASCADE,
   FOREIGN KEY (reviewId)
     REFERENCES review(id)
@@ -75,24 +75,4 @@ CREATE TABLE photos(
   );
   
 
-CREATE TABLE rating(
-  id INT NOT NULL AUTO_INCREMENT,
-  productId INT NOT NULL,
-  rating INT NOT NULL CHECK (rating<6 AND rating>=0) DEFAULT 0, 
-  PRIMARY KEY (id),
-  FOREIGN KEY (productId)
-	  REFERENCES product(id)
-	  ON DELETE CASCADE
-  );
 
-CREATE TABLE recommended(
-  id INT NOT NULL AUTO_INCREMENT,
-  productId INT NOT NULL,
-  yes INT NOT NULL DEFAULT 0,
-  no INT NOT NULL DEFAULT 0,
-  PRIMARY KEY (id),
-  FOREIGN KEY (productId)
-	  REFERENCES product(id)
-	  ON DELETE CASCADE
-  );
-  
