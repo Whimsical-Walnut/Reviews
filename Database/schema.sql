@@ -1,14 +1,17 @@
 
-DROP DATABASE IF EXISTS reviewsAPI;
+DROP DATABASE IF EXISTS reviews_api;
 
-CREATE DATABASE reviewsAPI;
+CREATE DATABASE reviews_api;
 
-use reviewsAPI;
+use reviews_api;
 
 CREATE TABLE product (
   id INT NOT NULL AUTO_INCREMENT,
-  count INT NOT NULL DEFAULT 0,
-  page INT NOT NULL DEFAULT 0,
+  name VARCHAR(255) NOT NULL,
+  slogan VARCHAR(255) NOT NULL,
+  description VARCHAR(255) NOT NULL,
+  category VARCHAR(255) NOT NULL,
+  default_price INT NOT NULL,
   PRIMARY KEY (id)
 );
 
