@@ -33,24 +33,4 @@ const reviewsSchema = new Schema({
 const Reviews = mongoose.model('Reviews', reviewsSchema);
 
 
-const metaSchema = new Schema({
-    product_id: String,
-    ratings: {
-        2: Number,
-        3: Number,
-        4: Number,
-    },
-    recommended: {
-        0: Number,
-        1: Number
-    },
-    characteristics: {
-        id: {
-            value: String
-        }
-    }
-});
-
-
-const Meta = mongoose.model('Meta', metaSchema);
 
