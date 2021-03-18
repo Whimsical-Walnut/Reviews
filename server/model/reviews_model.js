@@ -8,10 +8,18 @@ db.connection.connect(function (err) {
 });
 
 
+const getReviews = (product_id) => {
+    let query = 'select * from review where product_id = ?';
+}
 
+
+const getReviewsMeta = (product_id) => {
+    let query = 'select * from review where product_id = ?';
+
+}
 
 const postReviews = (product_id, rating, summary, body, recommend, name, email, photos, characteristics) => {
-    let newReviewId = 0;
+
     let query = 'insert into review set ?';
     let reviewBody = {
         product_id: product_id,
@@ -27,48 +35,67 @@ const postReviews = (product_id, rating, summary, body, recommend, name, email, 
         if (err) {
             console.log(err)
         } else {
-            newReviewId = result.insertId;
-            postCharacteristics(product_id, characteristics, newReviewId)
-
-
+            // newReviewId = result.insertId;
+            console.log(result.insertId)
+            postCharacteristics(product_id, characteristics, result.insertId)
+            postPhotos(result.insertId, photos)
         }
     })
 
 }
 
-const postCharacteristics = (product_id, characteristics, review_id) => {
+const postPhotos = (review_id, photos) => {
+    //insert array of urls to database
+    for (var i = 0; i < photos.length; i++) {
+        //insert to characteristics table
+        let photo = photos[i]
+        console.log(photo)
+        let body = {
+            review_id,
+            url: photo
+        }
+        let query = 'insert into photos set ?'
+        db.connection.query(query, body, function (err, result) {
+            if (err) {
+                console.log(err)
+            } else {
+                console.log(result.insertId);
+            }
+        })
+    }
+}
 
+const postCharacteristics = (product_id, characteristics, review_id) => {
     let promises = []
-    let newCharacteristicId = 0;
     let names = Object.keys(characteristics);
     for (var i = 0; i < names.length; i++) {
         //insert to characteristics table
-        let promise = new Promise((resolve, reject) => {
-            let name = names[i]
-            let body = {
-                product_id,
-                name
-            }
-            let query = 'insert into characteristics set ?'
-            db.connection.query(query, body, function (err, result) {
-                if (err) {
-                    reject(err);
-                } else {
-                    resolve(result);
+        promises.push(
+            new Promise((resolve, reject) => {
+                let name = names[i]
+                let body = {
+                    product_id,
+                    name
                 }
+                let query = 'insert into characteristics set ?'
+                db.connection.query(query, body, function (err, result) {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(result);
+                    }
+                })
             })
-        })
+        )
         //insert to characteristics_reviews table
-        promises.push(promise);
     }
     Promise.all(promises)
         .then(values => {
-            values.forEach(value => {
-                newCharacteristicId = value.insertId
-                if (review_id !== undefined) {
-                    postCharacteristicsReviews(characteristics, review_id, newCharacteristicId)
-                }
-            })
+            console.log(review_id);
+            for (let i = 0; i < values.length; i++) {
+                // console.log(values[i].insertId)
+                postCharacteristicsReviews(characteristics, review_id, values[i].insertId)
+            }
 
         })
         .catch(err => console.log(err))
@@ -110,8 +137,8 @@ const postCharacteristicsReviews = (characteristics, review_id, characteristic_i
         })
         .catch(err => console.log(err))
     //console.log('loaded')
-
 }
+
 
 const updateHelpful = (review_id, callback) => {
     db.connection.query('select helpfulness from review where id =1', function (err, result) {
@@ -132,6 +159,8 @@ const updateHelpful = (review_id, callback) => {
         }
     })
 }
+
+
 
 const updateReport = (review_id, callback) => {
     let query = 'update review set reported=? where id = ?'
@@ -162,9 +191,9 @@ const updateReport = (review_id, callback) => {
 // updateHelpful(1, function (err, result) {
 //     console.log('update it');
 // })
-postReviews(1, 5, 'awesome', 'good product', false, 'momo', 'mosun111@gamil.com', 'http:///', { world: 3.5000, value: 3.5000 });
-postCharacteristics(1, { world: 3.5000, value: 3.5000 });
-postCharacteristicsReviews({ world: 3.5000, value: 3.5000 }, 885495, 1)
+postReviews(1, 5, 'awesome', 'good product', false, 'momo', 'mosun111@gamil.com', ['http:///', 'http:///upslash'], { world: 3.5000, value: 3.5000 });
+// postCharacteristics(1, { world: 3.5000, value: 3.5000 });
+// postCharacteristicsReviews({ world: 3.5000, value: 3.5000 }, 885495, 1)
 
 //why callback is not a function here if pass as a param
 
