@@ -28,9 +28,8 @@ const postReviews = (product_id, rating, summary, body, recommend, name, email, 
             console.log(err)
         } else {
             newReviewId = result.insertId;
-            if (newReviewId) {
-                postCharacteristics(product_id, characteristics, newReviewId)
-            }
+            postCharacteristics(product_id, characteristics, newReviewId)
+
 
         }
     })
@@ -55,8 +54,6 @@ const postCharacteristics = (product_id, characteristics, review_id) => {
                 if (err) {
                     reject(err);
                 } else {
-                    newCharacteristicId = result.insertId
-                    postCharacteristicsReviews(characteristics, review_id, newCharacteristicId)
                     resolve(result);
                 }
             })
@@ -67,8 +64,10 @@ const postCharacteristics = (product_id, characteristics, review_id) => {
     Promise.all(promises)
         .then(values => {
             values.forEach(value => {
-                // console.log(value.insertId)
-                console.log('new characteristic name insert')
+                newCharacteristicId = value.insertId
+                if (review_id !== undefined) {
+                    postCharacteristicsReviews(characteristics, review_id, newCharacteristicId)
+                }
             })
 
         })
@@ -90,7 +89,6 @@ const postCharacteristicsReviews = (characteristics, review_id, characteristic_i
                 review_id,
                 characteristic_id
             }
-            console.log("there is just a test " + review_id)
             db.connection.query(query, body, function (err, result) {
                 if (err) {
                     reject(err);
@@ -106,7 +104,7 @@ const postCharacteristicsReviews = (characteristics, review_id, characteristic_i
         .then(values => {
             values.forEach(value => {
                 // console.log(value.insertId)
-                console.log('new characteristic value insert')
+                //console.log('new characteristic value insert')
             })
 
         })
