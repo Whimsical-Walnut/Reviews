@@ -46,12 +46,12 @@ fs.createReadStream(filePath)
 // }
 
 
-// LOAD DATA LOCAL INFILE '/Users/momosun/workspace/hackreactor/SDC-Project/Reviews/Datafiles/characteristics.csv'
-// INTO TABLE characteristics
-// FIELDS TERMINATED BY ','
-// ENCLOSED BY '"'
-// LINES TERMINATED BY '\n'
-// IGNORE 1 ROWS;
+LOAD DATA LOCAL INFILE '/Users/momosun/workspace/hackreactor/SDC-Project/Reviews/Datafiles/reviews_photos.csv'
+INTO TABLE photos
+FIELDS TERMINATED BY ','
+ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS;
 
 
 // getData();
