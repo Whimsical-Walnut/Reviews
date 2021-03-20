@@ -74,13 +74,79 @@ const getReviews = (product_id, callback) => {
 //     })
 // }
 
-const getReviewsMeta = (product_id) => {
-    let query = 'select * from review where product_id = ?';
+const getReviewsMeta = (product_id, callback) => {
+    let obj = {
+        ratings: {},
+        recommended: {},
+        characteristics: {}
+    }
+    let query = 'SELECT rating, COUNT(*) AS ratings FROM reviews_api.review WHERE product_id =? group by rating'
+    db.connection.query(query, product_id, function (err, results) {
+        if (err) {
+            console.log(err)
+        } else {
+            for (var i = 0; i < results.length; i++) {
+                let rating = results[i].rating
+                let rating_count = results[i].ratings
+                obj.ratings[rating] = rating_count
+            }
+            let query = 'SELECT recommend, COUNT(*)  AS recommended FROM reviews_api.review WHERE product_id =? group by recommend'
+            db.connection.query(query, product_id, function (err, results) {
+                if (err) {
+                    console.log(err)
+                } else {
+                    for (var i = 0; i < results.length; i++) {
+                        let recommend = results[i].recommend
+                        let recommend_count = results[i].recommended;
+                        obj.recommended[recommend] = recommend_count
+                    }
+                    let query = "select id,name from characteristics where name NOT regexp '^[0-9]+$' and product_id=?"
+                    db.connection.query(query, product_id, function (err, results) {
+                        if (err) {
+                            console.log(err)
+                        } else {
+                            let promises = []
+                            for (var i = 0; i < results.length; i++) {
+                                promises.push(new Promise((resolve, reject) => {
+                                    let name = results[i].name
+                                    let id = results[i].id
+                                    obj.characteristics[name] = { id: id, value: '' }
+                                    let query = "SELECT AVG(value) 'value' FROM reviews_api.characteristics_reviews where characteristic_id = ?"
+                                    db.connection.query(query, id, function (err, result) {
+                                        if (err) {
+                                            reject(err)
+                                        } else {
+                                            resolve(result)
+                                        }
+                                    })
+                                }))
+                            }
+
+                            return Promise.all(promises)
+                                .then(results => {
+                                    for (var i = 0; i < results.length; i++) {
+                                        let value = results[i][0].value
+                                        let name = Object.keys(obj.characteristics)[i]
+                                        obj.characteristics[name].value = value
+                                    }
+                                    callback(null, obj)
+                                })
+                                .catch(err => console.log(err))
+                        }
+                    })
+
+                }
+            })
+
+        }
+    })
 }
 
+
+
+
+
 const postReviews = (product_id, rating, summary, body, recommend, name, email, photos, characteristics, callback) => {
-
-
     let query = 'insert into review set ?';
     let reviewBody = {
         product_id: product_id,
@@ -256,6 +322,7 @@ const updateReport = (review_id, callback) => {
 // postCharacteristicsReviews({ world: 3.5000, value: 3.5000 }, 885495, 1)
 
 //why callback is not a function here if pass as a param
+getReviewsMeta(90);
 
 
 module.exports = {
@@ -266,5 +333,6 @@ module.exports = {
     postCharacteristics,
     postCharacteristicsReviews,
     updateHelpful,
-    updateReport
+    updateReport,
+    getReviewsMeta
 }
