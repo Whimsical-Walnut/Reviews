@@ -31,7 +31,7 @@ const getReviews = (product_id, callback) => {
                     resolve(reviewObject);
                 }))
             }
-            return Promise.all(promises)
+            Promise.all(promises)
                 .then((review) => {
                     let promises = []
                     for (let j = 0; j < review.length; j++) {
@@ -122,16 +122,16 @@ const getReviewsMeta = (product_id, callback) => {
                                 }))
                             }
 
-                            return Promise.all(promises)
+                            Promise.all(promises)
                                 .then(results => {
                                     for (var i = 0; i < results.length; i++) {
                                         let value = results[i][0].value
                                         let name = Object.keys(obj.characteristics)[i]
-                                        obj.characteristics[name].value = value
+                                        obj.characteristics[name].value = value.toFixed(2);
                                     }
                                     callback(null, obj)
                                 })
-                                .catch(err => console.log(err))
+                                .catch(err => callback(err, null))
                         }
                     })
 
@@ -322,7 +322,7 @@ const updateReport = (review_id, callback) => {
 // postCharacteristicsReviews({ world: 3.5000, value: 3.5000 }, 885495, 1)
 
 //why callback is not a function here if pass as a param
-getReviewsMeta(90);
+//getReviewsMeta(90);
 
 
 module.exports = {
