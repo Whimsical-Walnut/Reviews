@@ -46,25 +46,27 @@ const getReviews = (req, res) => {
 
 const getReviewsMeta = (req, res) => {
     const { product_id } = req.query
-    model.getReviewsMeta(product_id, function (err, result) {
-        if (err) {
-            res.send(err)
-        } else {
+    // model.getReviewsMeta(product_id, function (err, result) {
+    //     if (err) {
+    //         res.send(err)
+    //     } else {
 
-            res.send(result)
-        }
-    })
+    //         res.send(result)
+    //     }
+    // })
 
     // console.log(model.getReviewsMeta(product_id))
-    // model.getReviewsMeta(product_id)
-    //     .then(result => {
-    //         res.send(result)
-    //     })
-    //     .catch(err => {
-    //         res.send(err)
-    //     })
+    model.getReviewsMeta(product_id)
+        .then(result => {
+            res.send(result)
+        })
+        .catch(err => {
+            res.send(err)
+        })
 
 }
+
+
 
 
 module.exports = {
