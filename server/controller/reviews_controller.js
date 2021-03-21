@@ -1,7 +1,7 @@
 let model = require('../model/reviews_model')
 const updateReport = (req, res) => {
     const { review_id } = req.params;
-    model.updateReport(review_id, (err, resulst) => {
+    model.updateReport(review_id, (err, result) => {
         if (err) {
             res.status(404).send('fail')
         } else {
@@ -23,12 +23,16 @@ const updateHelpful = (req, res) => {
 }
 
 const postReviews = (req, res) => {
-    const { product_id, rating, summary, body, recommend, name, email, photos, characteristics } = req.query
+    let { product_id, rating, summary, body, recommend, name, email, photos, characteristics } = req.body
+
+
     model.postReviews(product_id, rating, summary, body, recommend, name, email, photos, characteristics, (err, result) => {
         if (err) {
             res.send('unable to post reviews')
+            //console.log(err)
         } else {
             res.send('Thanks for the review')
+            // console.log(result)
         }
     });
 }
@@ -36,7 +40,6 @@ const postReviews = (req, res) => {
 const getReviews = (req, res) => {
 
     let { product_id, count, page, sort } = req.query
-    // console.log(count)
     // console.log(typeof page)
     if (sort === "newest") {
         sort = "date"

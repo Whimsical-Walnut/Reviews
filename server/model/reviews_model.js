@@ -9,7 +9,7 @@ db.connection.connect(function (err) {
 
 
 const getReviews = (product_id, count, page, sort, callback) => {
-    
+
     let query = '';
     if (page === 0) {
         query = `select * from review where product_id = ? order by ${sort} desc limit ${page},${count} ;`;
@@ -177,9 +177,9 @@ const postReviews = (product_id, rating, summary, body, recommend, name, email, 
         if (err) {
             callback(err, null)
         } else {
-            // newReviewId = result.insertId;
-            callback(err, postCharacteristics(product_id, characteristics, result.insertId))
+
             postPhotos(result.insertId, photos)
+            postCharacteristics(product_id, characteristics, result.insertId, callback)
         }
     })
 }
@@ -204,7 +204,8 @@ const postPhotos = (review_id, photos) => {
     }
 }
 
-const postCharacteristics = (product_id, characteristics, review_id) => {
+const postCharacteristics = (product_id, characteristics, review_id, callback) => {
+    console.log(characteristics)
     let promises = []
     let names = Object.keys(characteristics);
     for (var i = 0; i < names.length; i++) {
@@ -216,7 +217,7 @@ const postCharacteristics = (product_id, characteristics, review_id) => {
                     product_id,
                     name
                 }
-                console.log(body)
+
                 let query = 'insert into characteristics set ?'
                 db.connection.query(query, body, function (err, result) {
                     if (err) {
@@ -232,7 +233,7 @@ const postCharacteristics = (product_id, characteristics, review_id) => {
     Promise.all(promises)
         .then(values => {
             for (let i = 0; i < values.length; i++) {
-                return postCharacteristicsReviews(characteristics, review_id, values[i].insertId)
+                postCharacteristicsReviews(characteristics, review_id, values[i].insertId, callback)
             }
         })
         .catch(err => {
@@ -241,27 +242,27 @@ const postCharacteristics = (product_id, characteristics, review_id) => {
 }
 
 
-const postCharacteristicsReviews = (characteristics, review_id, characteristic_id) => {
+const postCharacteristicsReviews = (characteristics, review_id, characteristic_id, callback) => {
+
     let names = Object.keys(characteristics);
     for (var i = 0; i < names.length; i++) {
         //insert to characteristics table
-        // let promise = new Promise((resolve, reject) => {
+        // let promise = new Promise((resolve, reject) => 
         let query = 'insert into characteristics_reviews set ?';
         let value = characteristics[names[i]];
+        console.log(typeof value)
         let body = {
             value,
             review_id,
             characteristic_id
         };
-
-        console.log(body)
         db.connection.query(query, body, function (err, result) {
             if (err) {
                 //callback(err, null);
                 //console.log(err)
-                return err
+                callback(err, null)
             } else {
-                return result.insertId;
+                callback(null, result.insertId);
             }
         })
         // })
@@ -350,7 +351,6 @@ module.exports = {
     getReviews,
     getReviewsMeta,
     postReviews,
-    postPhotos,
     postCharacteristics,
     postCharacteristicsReviews,
     updateHelpful,
