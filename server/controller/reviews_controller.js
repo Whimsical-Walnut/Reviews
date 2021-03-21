@@ -34,8 +34,11 @@ const postReviews = (req, res) => {
 }
 
 const getReviews = (req, res) => {
-    const { product_id } = req.query
-    model.getReviews(product_id, function (err, results) {
+   
+    const { product_id, count, page } = req.query
+    console.log(count)
+    console.log(typeof page)
+    model.getReviews(product_id, count, page, function (err, results) {
         if (err) {
             res.send(err)
         }

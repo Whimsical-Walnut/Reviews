@@ -8,8 +8,13 @@ db.connection.connect(function (err) {
 });
 
 
-const getReviews = (product_id, callback) => {
-    let query = 'select * from review where product_id = ?';
+const getReviews = (product_id, count, page, callback) => {
+    let query = '';
+    if (page === 0) {
+        query = `select * from review where product_id = ? limit ${page},${count};`;
+    } else {
+        query = `select * from review where product_id = ? limit ${page * count},${count};`;
+    }
     db.connection.query(query, [product_id], function (err, results) {
         if (err) {
             callback(err, null)
@@ -55,7 +60,14 @@ const getReviews = (product_id, callback) => {
                     }
                     return Promise.all(promises)
                 }).then((results) => {
-                    callback(null, results)
+
+                    let result = {
+                        product: product_id,
+                        count,
+                        page,
+                        results
+                    }
+                    callback(null, result)
                 })
                 .catch(err => callback(err, null))
         }
@@ -74,7 +86,7 @@ const getReviews = (product_id, callback) => {
 //     })
 // }
 
-const getReviewsMeta = (product_id, callback) => {
+const getReviewsMeta = (product_id) => {
     let obj = {
         ratings: {},
         recommended: {},
@@ -122,7 +134,7 @@ const getReviewsMeta = (product_id, callback) => {
                                         })
                                     }))
                                 }
-                               Promise.all(promises)
+                                Promise.all(promises)
                                     .then(results => {
                                         for (var i = 0; i < results.length; i++) {
                                             let value = results[i][0].value
@@ -130,15 +142,15 @@ const getReviewsMeta = (product_id, callback) => {
                                             obj.characteristics[name].value = value.toFixed(2);
                                         }
                                         // callback(null, obj)
-                                       resolve(obj)
+                                        resolve(obj)
                                     })
                                     .catch(err => reject(err))
                             }
                         })
-    
+
                     }
                 })
-    
+
             }
         })
     })
@@ -310,6 +322,13 @@ const updateReport = (review_id, callback) => {
 //     }
 // })
 
+// getReviews(13, 2, 1, (err, result) => {
+//     if (err) {
+//         console.log(err)
+//     } else {
+//         console.log(result)
+//     }
+// })
 
 // updateReport(1, function (err, result) {
 //     console.log('got it');
