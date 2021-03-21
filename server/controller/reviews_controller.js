@@ -34,11 +34,16 @@ const postReviews = (req, res) => {
 }
 
 const getReviews = (req, res) => {
-   
-    const { product_id, count, page } = req.query
-    console.log(count)
-    console.log(typeof page)
-    model.getReviews(product_id, count, page, function (err, results) {
+
+    let { product_id, count, page, sort } = req.query
+    // console.log(count)
+    // console.log(typeof page)
+    if (sort === "newest") {
+        sort = "date"
+    } else if (sort === "helpful") {
+        sort = "recommend"
+    }
+    model.getReviews(product_id, count, page, sort, function (err, results) {
         if (err) {
             res.send(err)
         }

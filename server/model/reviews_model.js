@@ -8,12 +8,13 @@ db.connection.connect(function (err) {
 });
 
 
-const getReviews = (product_id, count, page, callback) => {
+const getReviews = (product_id, count, page, sort, callback) => {
+    
     let query = '';
     if (page === 0) {
-        query = `select * from review where product_id = ? limit ${page},${count};`;
+        query = `select * from review where product_id = ? order by ${sort} desc limit ${page},${count} ;`;
     } else {
-        query = `select * from review where product_id = ? limit ${page * count},${count};`;
+        query = `select * from review where product_id = ? order by ${sort} desc limit ${page * count},${count};`;
     }
     db.connection.query(query, [product_id], function (err, results) {
         if (err) {
