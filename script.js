@@ -3,24 +3,29 @@ import { sleep } from 'k6';
 
 const BASE_URL = 'http://localhost:3000';
 export let options = {
-    vus: 20,
-    ext: {
-        loadimpact: {
-            projectID: 3530441,
-            // Test runs with the same name groups test runs together
-            name: "Momo Sun"
-        }
-    },
+    //vus: 50,
+    // ext: {
+    //     loadimpact: {
+    //         projectID: 3530441,
+    //         // Test runs with the same name groups test runs together
+    //         name: "Momo Sun"
+    //     }
+    // },
     stages: [
-        { duration: "1m", target: 20 },
-        { duration: "3m", target: 20 },
-        { duration: "1m", target: 0 },
-    ],
+        { duration: '2m', target: 100 }, // below normal load
+        { duration: '5m', target: 100 },
+        { duration: '2m', target: 200 }, // normal load
+        { duration: '5m', target: 200 },
+        { duration: '2m', target: 300 }, // around the breaking point
+        { duration: '5m', target: 300 },
+        { duration: '2m', target: 400 }, // beyond the breaking point
+        { duration: '5m', target: 400 },
+        { duration: '10m', target: 0 }, // scale down. Recovery stage.
+      ],
 };
 export default function () {
 
     for (var id = 0; id <= 100; id++) {
-
         http.get(`${BASE_URL}/reviews/meta?product_id=${id}`);
     }
     sleep(1);
@@ -34,19 +39,19 @@ export default function () {
 
 // const BASE_URL = 'http://localhost:3000';
 // export let options = {
-//     vus: 20,
-//     ext: {
-//         loadimpact: {
-//             projectID: 3530441,
-//             // Test runs with the same name groups test runs together
-//             name: "Momo Sun"
-//         }
-//     },
-//     stages: [
-//         { duration: "1m", target: 20 },
-//         { duration: "3m", target: 20 },
-//         { duration: "1m", target: 0 },
-//     ],
+//     vus: 100,
+//     // ext: {
+//     //     loadimpact: {
+//     //         projectID: 3530441,
+//     //         // Test runs with the same name groups test runs together
+//     //         name: "Momo Sun"
+//     //     }
+//     // },
+//     // stages: [
+//     //     { duration: "1m", target: 20 },
+//     //     { duration: "3m", target: 20 },
+//     //     { duration: "1m", target: 0 },
+//     // ],
 // };
 // export default function () {
 //     let metaReq = {

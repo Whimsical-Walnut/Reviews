@@ -26,7 +26,7 @@ CREATE TABLE review (
   recommend TINYINT(1),
   reported TINYINT(1),
   reviewer_name VARCHAR(255) NOT NULL,
-  reviewer_email VARCHAR(50) NOT NULL ,
+  reviewer_email VARCHAR(50) NOT NULL UNIQUE,
   response VARCHAR(255),
   helpfulness INT DEFAULT NULL ,
   PRIMARY KEY (id),
