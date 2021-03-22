@@ -36,8 +36,8 @@
 import http from 'k6/http';
 import { sleep } from 'k6';
 import { check } from 'k6';
-import { Rate } from 'k6/metrics';
-import { Counter } from "k6/metrics";
+// import { Rate } from 'k6/metrics';
+// import { Counter } from "k6/metrics";
 
 const BASE_URL = 'http://localhost:3000';
 
@@ -49,9 +49,8 @@ export let options = {
     //duration: '30s',
     thresholds: {
         http_req_failed: ['rate<0.01'],   // http errors should be less than 1% 
-        http_req_duration: ['p(90) < 400', 'p(95) < 800', 'p(99.9) < 2000'], //reponse tiem latency 
+        http_req_duration: ['p(90) < 400', 'p(95) < 800', 'p(99.9) < 2000'], //reponse time latency 
         http_req_waiting:['count >=300'] //thoughput
-   
          // 95% of requests should be below 200ms (latency=>response time)
     },
     // ext: {
