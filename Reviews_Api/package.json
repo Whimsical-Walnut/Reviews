@@ -7,7 +7,9 @@
     "start": "nodemon server/server.js",
     "build": "webpack -w",
     "test": "jest --coverage",
-    "mysql": "mysql -u root -p < Database/schema.sql"
+    "mysql": "mysql -u root -p < Database/schema.sql",
+    "k6": "k6 run -o influxdb=http://localhost:8086/myk6db script.js",
+    "influxd": "influxd"
   },
   "devDependencies": {
     "nodemon": "^2.0.7",
@@ -16,6 +18,13 @@
     "webpack-cli": "^4.5.0"
   },
   "dependencies": {
-    "express": "^4.17.1"
+    "body-parser": "^1.19.0",
+    "crypto": "^1.0.1",
+    "csv-parse": "^4.15.3",
+    "csv-parser": "^3.0.0",
+    "express": "^4.17.1",
+    "fast-csv": "^4.3.6",
+    "file-system": "^2.2.2",
+    "mysql": "^2.18.1"
   }
 }
