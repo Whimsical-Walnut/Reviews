@@ -48,10 +48,10 @@ export let options = {
     //vus: 10,
     //duration: '30s',
     thresholds: {
-        http_req_failed: ['rate<0.01'],   // http errors should be less than 1% 
-        http_req_duration: ['p(90) < 400', 'p(95) < 800', 'p(99.9) < 2000'], //reponse time latency 
-        http_req_waiting:['count >=300'] //thoughput
-         // 95% of requests should be below 200ms (latency=>response time)
+        http_req_failed: ['rate<0.01'],   // Goal <1% under load
+        http_req_duration: ['p(90) < 400', 'p(95) < 800', 'p(99.9) < 2000'],// 95% of requests should be below 200ms (latency=>response time) Goal: <2000ms under load
+        http_req_waiting:['count >=300'] //thoughput Goal 100rps on EC2
+       
     },
     // ext: {
     //     loadimpact: {
