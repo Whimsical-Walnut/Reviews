@@ -56,6 +56,7 @@ const getReviews = (req, res) => {
 }
 
 const getReviewsMeta = (req, res) => {
+
     const { product_id } = req.query
     // model.getReviewsMeta(product_id, function (err, result) {
     //     if (err) {

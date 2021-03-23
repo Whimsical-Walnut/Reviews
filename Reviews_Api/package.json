@@ -1,5 +1,5 @@
 {
-  "name": "fec-projectCatwalk",
+  "name": "SDC",
   "version": "1.0.0",
   "description": "Front end capstone project for senior phase Hackreactor.",
   "main": "index.js",
@@ -8,7 +8,7 @@
     "build": "webpack -w",
     "test": "jest --coverage",
     "mysql": "mysql -u root -p < Database/schema.sql",
-    "k6": "k6 run -o influxdb=http://localhost:8086/myk6db script.js",
+    "k6": "k6 run --out influxdb=http://localhost:8086/myk6db script.js",
     "influxd": "influxd"
   },
   "devDependencies": {

@@ -1,2 +1,4 @@
 node_modules
 config.js
+Database/db.js
+Datafiles/*
