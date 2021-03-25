@@ -47,5 +47,14 @@ Deploy Multi-Container Apps to AWS, need docker commands instead of docker-compo
 - testing api routes in postman
 ```
 
+## Testing database running on local machine vs docker container
+
+```bash
+- brew services stop mysql (on mac)
+- sudo services mysql stop (ubuntu)
+- docker run mysql container
+- test mysql still works, if yes, mysql is for sure running in docker container 
+```
+
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
