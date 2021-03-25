@@ -4,10 +4,10 @@
   "description": "Front end capstone project for senior phase Hackreactor.",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server/server.js",
+    "start": "node server/server.js",
     "build": "webpack -w",
     "test": "jest --coverage",
-    "mysql": "mysql -u root -p < Database/schema.sql",
+    "mysql": "mysql -u root -h 127.0.0.1 --port 3306 reviews_api < cleandata.sql",
     "k6": "k6 run --out influxdb=http://localhost:8086/myk6db script.js",
     "influxd": "influxd"
   },
