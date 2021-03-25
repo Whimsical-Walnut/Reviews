@@ -27,7 +27,7 @@ const getReviews = (product_id, count, page, sort, callback) => {
                     let reviewObject = {
                         review_id: results[i].id,
                         rating: results[i].rating,
-                        summary:results[i].summary,
+                        summary: results[i].summary,
                         recommend: results[i].recommend,
                         response: results[i].response,
                         body: results[i].body,
@@ -286,22 +286,20 @@ const postCharacteristicsReviews = (characteristics, review_id, characteristic_i
 }
 
 const updateHelpful = (review_id, callback) => {
-    db.connection.query('select helpfulness from review where id =1', function (err, result) {
+
+    let helfulnessCount = result[0].helpfulness + 1;
+    //console.log(result[0].helpfulness)
+    let query = 'update review set helpfulness=? where id = ?'
+    db.connection.query(query, [helfulnessCount, review_id], function (err, result) {
         if (err) {
-            return err
+
+            callback(err, null)
         } else {
-            let helfulnessCount = result[0].helpfulness + 1;
-            //console.log(result[0].helpfulness)
-            let query = 'update review set helpfulness=? where id = ?'
-            db.connection.query(query, [helfulnessCount, review_id], function (err, result) {
-                if (err) {
-                    callback(err, null)
-                } else {
-                    callback(null, result)
-                }
-            })
+            callback(null, result)
         }
     })
+
+
 }
 
 
@@ -339,9 +337,9 @@ const updateReport = (review_id, callback) => {
 //     console.log('got it');
 // })
 
-// updateHelpful(1, function (err, result) {
+//  updateHelpful(1, function (err, result) {
 //     console.log('update it');
-// })
+//  })
 //postReviews(1, 5, 'awesome', 'good product', false, 'momo', 'mosun111@gamil.com', ['http:///', 'http:///upslash'], { world: 3.5000, value: 3.5000 });
 // postCharacteristics(1, { world: 3.5000, value: 3.5000 });
 // postCharacteristicsReviews({ world: 3.5000, value: 3.5000 }, 885495, 1)
