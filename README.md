@@ -38,7 +38,7 @@ Deploy Multi-Container Apps to AWS, need docker commands instead of docker-compo
 - ssh to the instance 
 - pull mosun611/sdc_reviews_api:reviews_api from docker
 - sudo docker pull mysql/mysql-server:5.7 (version depends)
-- sudo docker run --name=<container name> -p 3306:3306 -d -e MYSQL_PASSWORD=<password> -e MYSQL_USER=<username> -e MYSQL_DATABASE=<database-name> mysql/mysql-server:5.7
+- sudo docker run --name=<container name> -p 3306:3306 -d -e MYSQL_PASSWORD=<password> -e MYSQL_USER=<username> -e MYSQL_DATABASE=<database-name> mysql/mysql-server:5.7 (you can add volume environment variable to store the data on instance)
 - mysql -u<suername> -h127.0.0.1 -p<password> <databasename> < <path of the sql file>
 - sudo docker exec -it <container-name> bash
 - sudo docker run -d -p 80:<local-server port> <docker image repo>:<tagname>
