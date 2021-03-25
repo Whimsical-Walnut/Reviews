@@ -25,7 +25,7 @@ var connection = mysql.createConnection({
 module.exports.connection = connection;
 
 -- load data to database container 
-mysql -u root -f <localhost ip address> reviews_api < <path of the sql file>
+mysql -u root -h <localhost ip address> --port 3306 reviews_api < <path of the sql file>
 
 ```
 
