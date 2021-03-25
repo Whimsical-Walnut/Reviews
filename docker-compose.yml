@@ -1,4 +1,4 @@
-version: "3.9"
+version: "3.3"
 
 services:
   web:
@@ -19,6 +19,7 @@ services:
     environment:
       MYSQL_DATABASE: 'reviews_api'
       MYSQL_ALLOW_EMPTY_PASSWORD: 'true'
+      
 volumes:
   db_data: 
   web_data:

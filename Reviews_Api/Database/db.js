@@ -1,9 +1,9 @@
 var mysql = require('mysql');
 var connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    //password: '123456789',
-    database: 'reviews_api'
+    host: '172.31.24.52', //ec2 losthost ip address
+    user: 'momo', //docker mysql container username
+    password: '123', //mysql password 
+    database: 'reviews_api' //database name
 });
 
 module.exports.connection = connection;
