@@ -18,7 +18,7 @@ docker-compose up -d
 -- modify db.js
 var mysql = require('mysql');
 var connection = mysql.createConnection({
-    host: 'db', 
+    host: '<ip address>', 
     database: 'reviews_api'
 });
 
