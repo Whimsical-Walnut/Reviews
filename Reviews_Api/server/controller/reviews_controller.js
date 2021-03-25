@@ -13,16 +13,14 @@ const updateReport = (req, res) => {
 
 const updateHelpful = (req, res) => {
 
-    console.log(req)
-    // const { review_id } = req.params;
-    // model.updateHelpful(review_id, (err, result) => {
-    //     if (err) {
-    //         console.log(err)
-    //        // res.status(404).send('fail')
-    //     } else {
-    //         res.send('successfully reported,that really help other customers. Thank you')
-    //     }
-    // })
+    const { review_id } = req.params;
+    model.updateHelpful(review_id, (err, result) => {
+        if (err) {
+           res.status(404).send(err)
+        } else {
+            res.send('successfully reported,that really help other customers. Thank you')
+        }
+    })
 }
 
 const postReviews = (req, res) => {
@@ -30,11 +28,11 @@ const postReviews = (req, res) => {
 
     model.postReviews(product_id, rating, summary, body, recommend, name, email, photos, characteristics, (err, result) => {
         if (err) {
-            res.send('unable to post reviews')
-            //console.log(err)
+            res.status(404).send(err)
+            // console.log(err)
         } else {
             res.send('Thanks for the review')
-            // console.log(result)
+            //console.log(result)
         }
     });
 }
@@ -50,7 +48,8 @@ const getReviews = (req, res) => {
     }
     model.getReviews(product_id, count, page, sort, function (err, results) {
         if (err) {
-            res.send(err)
+            console.log(err)
+            //res.send(err)
         }
         res.send(results)
     })

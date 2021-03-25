@@ -4,7 +4,7 @@ db.connection.connect(function (err) {
         console.error('connected');
         return;
     }
-    console.log('connected');
+    console.log('database connected');
 });
 
 
@@ -22,7 +22,7 @@ const getReviews = (product_id, count, page, sort, callback) => {
         } else {
             let promises = [];
             for (var i = 0; i < results.length; i++) {
-                console.log(results[i].summary)
+                // console.log(results[i].summary)
                 promises.push(new Promise((resolve, reject) => {
                     let reviewObject = {
                         review_id: results[i].id,
@@ -201,6 +201,7 @@ const postPhotos = (review_id, photos) => {
             if (err) {
                 return err
             } else {
+
                 return result.insertId;
             }
         })
@@ -208,7 +209,7 @@ const postPhotos = (review_id, photos) => {
 }
 
 const postCharacteristics = (product_id, characteristics, review_id, callback) => {
-    console.log(characteristics)
+    //console.log(characteristics)
     let promises = []
     let names = Object.keys(characteristics);
     for (var i = 0; i < names.length; i++) {
@@ -226,6 +227,7 @@ const postCharacteristics = (product_id, characteristics, review_id, callback) =
                     if (err) {
                         reject(err);
                     } else {
+                        console.log(3)
                         resolve(result);
                     }
                 })
@@ -261,11 +263,12 @@ const postCharacteristicsReviews = (characteristics, review_id, characteristic_i
         };
         db.connection.query(query, body, function (err, result) {
             if (err) {
-                //callback(err, null);
+                callback(err, null);
                 //console.log(err)
-                callback(err, null)
+                // callback(err, null)
             } else {
-                callback(null, result.insertId);
+                console.log(result)
+                // callback(null, result.insertId);
             }
         })
         // })
@@ -286,19 +289,24 @@ const postCharacteristicsReviews = (characteristics, review_id, characteristic_i
 }
 
 const updateHelpful = (review_id, callback) => {
-
-    let helfulnessCount = result[0].helpfulness + 1;
-    //console.log(result[0].helpfulness)
-    let query = 'update review set helpfulness=? where id = ?'
-    db.connection.query(query, [helfulnessCount, review_id], function (err, result) {
+    db.connection.query('select helpfulness from review where id = ?', [review_id], function (err, result) {
         if (err) {
-
-            callback(err, null)
+            return err
         } else {
-            callback(null, result)
+
+            let helfulnessCount = result[0].helpfulness + 1;
+            //console.log(result[0].helpfulness)
+            let query = 'update review set helpfulness=? where id = ?'
+            db.connection.query(query, [helfulnessCount, review_id], function (err, result) {
+                if (err) {
+
+                    callback(err, null)
+                } else {
+                    callback(null, result)
+                }
+            })
         }
     })
-
 
 }
 
@@ -340,7 +348,13 @@ const updateReport = (review_id, callback) => {
 //  updateHelpful(1, function (err, result) {
 //     console.log('update it');
 //  })
-//postReviews(1, 5, 'awesome', 'good product', false, 'momo', 'mosun111@gamil.com', ['http:///', 'http:///upslash'], { world: 3.5000, value: 3.5000 });
+// postReviews(1, 5, 'awesome', 'good product', false, 'momo', '@gamil.com', ['http:///', 'http:///upslash'], { }, (err, result) => {
+//     if (err) {
+//         console.log(err)
+//     } else {
+//         console.log(result)
+//     }
+// });
 // postCharacteristics(1, { world: 3.5000, value: 3.5000 });
 // postCharacteristicsReviews({ world: 3.5000, value: 3.5000 }, 885495, 1)
 

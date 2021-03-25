@@ -1,8 +1,8 @@
 var mysql = require('mysql');
 var connection = mysql.createConnection({
-    host: 'db', //ec2 172.31.24.52
+    host: 'localhost', //ec2 172.31.24.52
     user: 'root', //momo
-    //password: '123456789', //123
+    password: '123456789', //123
     database: 'reviews_api'
 });
 
