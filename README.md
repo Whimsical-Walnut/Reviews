@@ -7,7 +7,7 @@ Reviews_API are review server to provide data to client in the format specified 
 Use the docker command [docker pull](https://pip.pypa.io/en/stable/) to pull the image
 
 ```bash
-pull mosun611/sdc_reviews_api:reviews_api
+pull mosun611/sdc_reviews_api:reviews_api from docker
 ```
 
 ## Run
