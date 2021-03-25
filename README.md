@@ -19,7 +19,7 @@ docker-compose up -d
 var mysql = require('mysql');
 var connection = mysql.createConnection({
     host: '<ip address>', 
-    database: 'reviews_api'
+    database: '<database name>'
 });
 
 module.exports.connection = connection;
