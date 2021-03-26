@@ -8,6 +8,7 @@ db.connection.connect(function (err) {
 });
 
 
+
 const getReviews = (product_id, count, page, sort, callback) => {
 
     let query = '';

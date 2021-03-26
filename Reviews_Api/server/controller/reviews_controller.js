@@ -16,7 +16,7 @@ const updateHelpful = (req, res) => {
     const { review_id } = req.params;
     model.updateHelpful(review_id, (err, result) => {
         if (err) {
-           res.status(404).send(err)
+            res.status(404).send(err)
         } else {
             res.send('successfully reported,that really help other customers. Thank you')
         }
@@ -79,7 +79,9 @@ const getReviewsMeta = (req, res) => {
 
 }
 
-
+const getVerifyLoader = (req, res) => {
+    res.send('loaderio-ea6a32148581ca35a52e601d77ff174e')
+}
 
 
 module.exports = {
@@ -87,7 +89,8 @@ module.exports = {
     updateHelpful,
     postReviews,
     getReviews,
-    getReviewsMeta
+    getReviewsMeta,
+    getVerifyLoader
 }
 
 // getReviews,
