@@ -12,10 +12,10 @@ function reconnect(connection) {
     console.log("\n New connection tentative...");
 
     //- Destroy the current connection variable
-    if (connection) connection.destroy();
+    if (db.connection) db.connection.destroy();
 
     //- Create a new one
-    var connection = mysql_npm.createConnection(db_config);
+    var connection = mysql_npm.createConnection(db.connection);
 
     //- Try to reconnect
     connection.connect(function (err) {
@@ -35,19 +35,19 @@ db.connection.on('error', function (err) {
     //- The server close the connection.
     if (err.code === "PROTOCOL_CONNECTION_LOST") {
         console.log("/!\\ Cannot establish a connection with the database. /!\\ (" + err.code + ")");
-        connection = reconnect(connection);
+        db.connection = reconnect(db.connection);
     }
 
     //- Connection in closing
     else if (err.code === "PROTOCOL_ENQUEUE_AFTER_QUIT") {
         console.log("/!\\ Cannot establish a connection with the database. /!\\ (" + err.code + ")");
-        connection = reconnect(connection);
+        db.connection = reconnect(db.connection);
     }
 
     //- Fatal error : connection variable must be recreated
     else if (err.code === "PROTOCOL_ENQUEUE_AFTER_FATAL_ERROR") {
         console.log("/!\\ Cannot establish a connection with the database. /!\\ (" + err.code + ")");
-        connection = reconnect(connection);
+        db.connection = reconnect(db.connection);
     }
 
     //- Error because a connection is already being established
@@ -58,7 +58,7 @@ db.connection.on('error', function (err) {
     //- Anything else
     else {
         console.log("/!\\ Cannot establish a connection with the database. /!\\ (" + err.code + ")");
-        connection = reconnect(connection);
+        db.connection = reconnect(db.connection);
     }
 
 });
@@ -346,8 +346,8 @@ const postCharacteristicsReviews = (characteristics, review_id, characteristic_i
 const updateHelpful = (review_id, callback) => {
     db.connection.query('select helpfulness from review where id = ?', [review_id], function (err, result) {
         if (err) {
-            console.log(1)
-            return err
+            console.log(err)
+            //return err
         } else {
             let helfulnessCount = result[0].helpfulness + 1;
             //console.log(result[0].helpfulness)
