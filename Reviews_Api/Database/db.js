@@ -8,4 +8,4 @@ var connection = mysql.createConnection({
 
 module.exports.connection = connection;
 
-//MYSQL_HOST_IP: '192.168.2.8'
+//MYSQL_HOST_IP: '192.168.2.8'ls

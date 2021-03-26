@@ -81,7 +81,7 @@ export default function () {
         method: 'GET',
         url: `${BASE_URL}/reviews/meta`,
         params: {
-            product_id: 13
+            product_id: 44
         },
     };
 
@@ -89,7 +89,7 @@ export default function () {
         method: 'GET',
         url: `${BASE_URL}/reviews`,
         params: {
-            product_id: 1,
+            product_id: 44,
             page: 0,
             count: 2,
             sort: 'newest'
@@ -100,7 +100,7 @@ export default function () {
         method: 'POST',
         url: `${BASE_URL}/reviews`,
         body: {
-            "product_id": "13",
+            "product_id": "44",
             "rating": "4",
             "summary": "I love this product",
             "body": "I will buy next time",
@@ -116,7 +116,7 @@ export default function () {
         method: 'PUT',
         url: `${BASE_URL}/reviews/:review_id/report`,
         params: {
-            review_id: 4
+            review_id: 210
         },
     };
 
@@ -124,7 +124,7 @@ export default function () {
         method: 'PUT',
         url: `${BASE_URL}/reviews/:review_id/helpful`,
         params: {
-            review_id: 4
+            review_id: 210
         },
     }
 
