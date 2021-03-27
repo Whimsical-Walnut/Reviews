@@ -57,6 +57,18 @@ Deploy Multi-Container Apps to AWS, need docker commands instead of docker-compo
 - test mysql still works, if yes, mysql is for sure running in docker container 
 ```
 
+
+## Grant All the user 
+
+```bash
+- sudo mysql
+- CREATE USER 'example_user'@'%' IDENTIFIED WITH mysql_native_password BY 'password';
+- GRANT ALL ON example_database.* TO 'example_user'@'%';
+
+- exit
+```
+
+
 ## License
 This project is licensed under the MIT License - see the package.json file in backend folder for details
 [MIT](https://choosealicense.com/licenses/mit/)
