@@ -69,6 +69,15 @@ Deploy Multi-Container Apps to AWS, need docker commands instead of docker-compo
 ```
 
 
+
+## NGINX config
+
+```bash
+
+```
+
+
+
 ## License
 This project is licensed under the MIT License - see the package.json file in backend folder for details
 [MIT](https://choosealicense.com/licenses/mit/)
