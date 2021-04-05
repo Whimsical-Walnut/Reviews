@@ -73,6 +73,51 @@ Deploy Multi-Container Apps to AWS, need docker commands instead of docker-compo
 ## NGINX config
 
 ```bash
+worker_processes auto;
+
+http {
+  keepalive_timeout 150;
+  keepalive_requests 5000;
+  upstream all {
+    server 204.236.190.49:80;
+    server 13.56.253.164:80;
+    server 52.53.246.50:80;
+    server 3.101.73.228:80;
+    keepalive 2000;
+  }
+  server {
+    listen 3001;
+    root   /home/public;
+    location / {
+      proxy_pass http://all/;
+       proxy_connect_timeout 159s;
+       proxy_send_timeout   600;
+       proxy_read_timeout   3600;
+       proxy_buffer_size    64k;
+       proxy_buffers     16 32k;
+       proxy_busy_buffers_size 64k;
+       proxy_temp_file_write_size 64k;
+       proxy_pass_header Set-Cookie;
+       proxy_redirect     off;
+       proxy_hide_header  Vary;
+       proxy_set_header   Accept-Encoding '';
+       proxy_ignore_headers Cache-Control Expires;
+        proxy_set_header   Referer $http_referer;
+       proxy_set_header   Host   $host;
+       proxy_set_header   Cookie $http_cookie;
+       proxy_set_header   X-Real-IP  $remote_addr;
+       proxy_set_header X-Forwarded-Host $host;
+       proxy_set_header X-Forwarded-Server $host;
+       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+    location /loaderio-2ea3258a3973d24a3a134fd54d2a32f7.txt {
+    }
+  }
+}
+
+events {
+  worker_connections 10000;
+}
 
 ```
 
